@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Food Order</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <h2>🍽️ Food Order Panel</h2>
+
+  <input type="number" id="tableNumber" placeholder="Table No"><br><br>
+
+  <div class="menu">
+    <button onclick="addItem('Burger',100)">Burger ₹100</button>
+    <button onclick="addItem('Pizza',200)">Pizza ₹200</button>
+  </div>
+
+  <div class="cart-box">
+    <h3>Your Order</h3>
+    <div id="cart"></div>
+    <div class="total" id="total">Total: ₹0</div>
+  </div>
+
+  <br>
+  <button onclick="placeOrder()">PLACE ORDER</button>
+</div>
+
+<script src="script.js"></script>
+<!-- BILL POPUP -->
+<div id="billPopup" class="popup">
+  <div class="popup-box">
+    <h3>🧾 Order Placed Successfully</h3>
+    <p><b>Table:</b> <span id="billTable"></span></p>
+
+    <div id="billItems"></div>
+
+    <h4>Total: ₹<span id="billTotal"></span></h4>
+
+    <button onclick="closeBill()">OK</button>
+  </div>
+</div>
+</body>
+</html>
