@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+
+  <!-- CSS (same style.css jo tum use kar rahe ho) -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <h2>📊 Admin Dashboard</h2>
+
+  <!-- DASHBOARD CARDS -->
+  <div class="dashboard">
+    <div class="card">
+      <h3>Total Orders</h3>
+      <p id="totalOrders">0</p>
+    </div>
+
+    <div class="card">
+      <h3>Pending Orders</h3>
+      <p id="pendingOrders">0</p>
+    </div>
+
+    <div class="card">
+      <h3>Completed Orders</h3>
+      <p id="completedOrders">0</p>
+    </div>
+
+    <div class="card">
+      <h3>Total Sales</h3>
+      <p id="totalSales">₹0</p>
+    </div>
+  </div>
+
+  <br>
+
+  <!-- RESET BUTTON -->
+  <button onclick="resetDay()">RESET DAY</button>
+
+  <br><br>
+
+  <!-- ORDER LIST (OPTIONAL BUT USEFUL) -->
+  <h3>📋 All Orders</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Table</th>
+        <th>Items</th>
+        <th>Total</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="orderList"></tbody>
+  </table>
+</div>
+
+<script>
+/* =========================
+   LOAD ADMIN DATA (SAFE)
+========================= */
+function loadAdmin() {
+  const orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+  let totalOrders = orders.length;
+  let pendingOrders = orders.filter(o => o.status === "pending").length;
+  let completedOrders = orders.filter(o => o.status === "completed").length;
+
+  let totalSales = orders
+    .filter(o => o.status === "completed")
+    .reduce((sum, o) => sum + (o.total || 0), 0);
+
+  document.getElementById("totalOrders").innerText = totalOrders;
+  document.getElementById("pendingOrders").innerText = pendingOrders;
+  document.getElementById("completedOrders").innerText = completedOrders;
+  document.getElementById("totalSales").innerText = "₹" + totalSales;
+
+  renderOrderList(orders);
+}
+
+/* =========================
+   RENDER ORDER TABLE
+========================= */
+function renderOrderList(orders) {
+  const tbody = document.getElementById("orderList");
+  tbody.innerHTML = "";
+
+  orders.forEach(order => {
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td>${order.id}</td>
+      <td>${order.table}</td>
+      <td>
+        ${order.items.map(i => `${i.name} × ${i.qty}`).join("<br>")}
+      </td>
+      <td>₹${order.total}</td>
+      <td>${order.status}</td>
+    `;
+
+    tbody.appendChild(tr);
+  });
+}
+
+/* =========================
+   RESET DAY (SAFE)
+========================= */
+function resetDay() {
+  if (confirm("Are you sure you want to reset today's data?")) {
+    localStorage.removeItem("orders");
+    loadAdmin();
+  }
+}
+
+/* =========================
+   AUTO REFRESH
+========================= */
+loadAdmin();
+setInterval(loadAdmin, 1000);
+</script>
+
+</body>
+</html>
