@@ -163,3 +163,25 @@ popup {
   border-radius: 6px;
   cursor: pointer;
 }
+
+table {
+  width: 100%;
+  overflow-x: auto;
+  display: block;
+}
+button {
+  width: 100%;
+  padding: 14px;
+  font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  body {
+    zoom: 1;
+  }
+
+  .container, .panel, .card {
+    width: 100% !important;
+    margin: 0 !important;
+  }
+}
